@@ -34,7 +34,7 @@
 						<tr>
 							<th>科目</th>
 						</tr>
-						<c:forEach var="student" items="${subjects }">
+						<c:forEach var="subject" items="${subjects }">
 							<tr>
 				
 								<td>${subject.name }</td>
