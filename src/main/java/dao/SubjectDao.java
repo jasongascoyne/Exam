@@ -60,7 +60,7 @@ public class SubjectDao extends Dao {
 	public void insert(Subject subject) throws Exception {
 		try (Connection con = getConnection();
 				PreparedStatement st = con.prepareStatement(
-						"INSERT INTO SUBJECT (SCHOOL_CD, SUBJECT_CD, NAME) VALUES (?, ?, ?)"
+						"INSERT INTO SUBJECT (SCHOOL_CD, CD, NAME) VALUES (?, ?, ?)"
 						)) {
 			
 			// ★ Schoolオブジェクトから取得
