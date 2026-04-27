@@ -54,4 +54,19 @@ public class SubjectDao extends Dao {
         // 結果を返す
         return list;
     }
-}
+	// ----------------------------
+	// ③ 新規登録
+	// ----------------------------
+	public void insert(Subject subject) throws Exception {
+		try (Connection con = getConnection();
+				PreparedStatement st = con.prepareStatement(
+						"INSERT INTO SUBJECT (SCHOOL_CD, SUBJECT_CD, NAME) VALUES (?, ?, ?)")) 
+		{
+
+			st.setString(1, subject.getSchoolCd());
+			st.setString(2, subject.getSubjectCd());
+			st.setString(3, subject.getNAME());
+			st.executeUpdate();
+	        }
+	    }
+	}
