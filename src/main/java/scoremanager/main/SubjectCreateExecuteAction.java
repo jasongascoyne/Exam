@@ -21,17 +21,17 @@ public class SubjectCreateExecuteAction extends Action {
         String cd = req.getParameter("cd");      // 科目コード
         String name = req.getParameter("name");  // 科目名
 
-        // ③ Subject にセット
+        // ③ Subject オブジェクトにセット
         Subject subject = new Subject();
         subject.setCd(cd);
         subject.setName(name);
         subject.setSchool(teacher.getSchool());
 
-        // ④ DB登録
+        // ④ DB 登録
         SubjectDao subjectDao = new SubjectDao();
-        subjectDao.save(subject);
+        subjectDao.insert(subject);
 
-        // ⑤ 完了画面へフォワード
+        // ⑤ 登録完了画面へフォワード
         req.getRequestDispatcher("subject_create_done.jsp")
            .forward(req, res);
     }
