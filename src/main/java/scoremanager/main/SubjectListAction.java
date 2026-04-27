@@ -11,11 +11,11 @@ import jakarta.servlet.http.HttpSession;
 import tool.Action;
 
 public class SubjectListAction extends Action {
-
+	
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
-
         // セッション取得
+
         HttpSession session = req.getSession();
         Teacher teacher = (Teacher) session.getAttribute("user");
 
@@ -23,7 +23,7 @@ public class SubjectListAction extends Action {
         SubjectDao subjectDao = new SubjectDao();
 
         // ログインユーザーの学校に紐づく科目一覧を取得
-        List<Subject> subjects = subjectDao.filter(teacher.getSchool());
+        List<Subject> subjects = subjectDao.filter(teacher.getSchool().getCd());
 
         // リクエストスコープにセット
         req.setAttribute("subjects", subjects);
