@@ -7,7 +7,6 @@ import javax.security.auth.Subject;
 public class Test implements Serializable {
 
 
-
 	private Student student;
 	
 	private String classNum;
@@ -68,7 +67,6 @@ public class Test implements Serializable {
 	public void setPoint(int point) {
 		this.point = point;
 	}
-
 
 	
 }
