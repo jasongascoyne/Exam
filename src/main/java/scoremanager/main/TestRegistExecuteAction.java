@@ -19,12 +19,15 @@ public class TestRegistExecuteAction extends Action {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
 
+        // ==========================
+        // セッション取得
+        // ==========================
         HttpSession session = req.getSession();
         Teacher teacher = (Teacher) session.getAttribute("user");
 
-        /* ==========================
-         * 検索条件取得（hidden）
-         * ========================== */
+        // ==========================
+        // パラメータ取得（hidden）
+        // ==========================
         String f1 = req.getParameter("f1"); // 入学年度
         String f2 = req.getParameter("f2"); // クラス
         String f3 = req.getParameter("f3"); // 科目
@@ -33,15 +36,15 @@ public class TestRegistExecuteAction extends Action {
         int entYear = Integer.parseInt(f1);
         int num = Integer.parseInt(f4);
 
-        /* ==========================
-         * 成績データ再取得
-         * ========================== */
+        // ==========================
+        // 成績データ取得（回数も含める）
+        // ==========================
         TestDao testDao = new TestDao();
-        List<Test> testList = testDao.filter(entYear, f2, f3);
+        List<Test> testList = testDao.filter(entYear, f2, f3, num);
 
-        /* ==========================
-         * 点数チェック
-         * ========================== */
+        // ==========================
+        // 入力チェック
+        // ==========================
         Map<String, String> errors = new HashMap<>();
 
         for (Test test : testList) {
@@ -49,11 +52,13 @@ public class TestRegistExecuteAction extends Action {
             String paramName = "point_" + test.getStudent().getNo();
             String pointStr = req.getParameter(paramName);
 
+            // 未入力はスキップ（変更しない）
             if (pointStr == null || pointStr.isEmpty()) {
-                continue; // 未入力はスキップ可
+                continue;
             }
 
             int point;
+
             try {
                 point = Integer.parseInt(pointStr);
             } catch (NumberFormatException e) {
@@ -68,9 +73,9 @@ public class TestRegistExecuteAction extends Action {
             }
         }
 
-        /* ==========================
-         * エラーがある場合
-         * ========================== */
+        // ==========================
+        // エラー処理
+        // ==========================
         if (!errors.isEmpty()) {
 
             req.setAttribute("errors", errors);
@@ -81,6 +86,7 @@ public class TestRegistExecuteAction extends Action {
             req.setAttribute("f3", f3);
             req.setAttribute("f4", f4);
 
+            // プルダウン再取得
             ClassNumDao classNumDao = new ClassNumDao();
             SubjectDao subjectDao = new SubjectDao();
 
@@ -94,21 +100,26 @@ public class TestRegistExecuteAction extends Action {
             return;
         }
 
-        /* ==========================
-         * 登録処理（INSERT / UPDATE）
-         * ========================== */
+        // ==========================
+        // 保存処理（登録 + 更新）
+        // ==========================
         for (Test test : testList) {
-            testDao.save(
-                test,
-                teacher.getSchool().getCd(),
-                f3,
-                num
-            );
+
+            // 点数が設定されている場合のみ保存
+            if (test.getPoint() != 0) {
+
+                testDao.save(
+                    test,
+                    teacher.getSchool().getCd(),
+                    f3,
+                    num
+                );
+            }
         }
 
-        /* ==========================
-         * 完了画面へ
-         * ========================== */
+        // ==========================
+        // 完了画面
+        // ==========================
         req.getRequestDispatcher("test_regist_done.jsp")
            .forward(req, res);
     }
