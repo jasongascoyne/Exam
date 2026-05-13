@@ -37,13 +37,13 @@ public class TestRegistExecuteAction extends Action {
         int num = Integer.parseInt(f4);
 
         // ==========================
-        // 成績データ取得（回数も含める）
+        // 成績データ取得（変更対象）
         // ==========================
         TestDao testDao = new TestDao();
         List<Test> testList = testDao.filter(entYear, f2, f3, num);
 
         // ==========================
-        // 入力チェック
+        // 点数入力チェック
         // ==========================
         Map<String, String> errors = new HashMap<>();
 
@@ -81,6 +81,7 @@ public class TestRegistExecuteAction extends Action {
             req.setAttribute("errors", errors);
             req.setAttribute("testList", testList);
 
+            // 検索条件保持
             req.setAttribute("f1", f1);
             req.setAttribute("f2", f2);
             req.setAttribute("f3", f3);
@@ -101,21 +102,9 @@ public class TestRegistExecuteAction extends Action {
         }
 
         // ==========================
-        // 保存処理（登録 + 更新）
+        // 保存処理（成績変更のみ）
         // ==========================
-        for (Test test : testList) {
-
-            // 点数が設定されている場合のみ保存
-            if (test.getPoint() != 0) {
-
-                testDao.save(
-                    test,
-                    teacher.getSchool().getCd(),
-                    f3,
-                    num
-                );
-            }
-        }
+        testDao.updateList(testList);
 
         // ==========================
         // 完了画面
