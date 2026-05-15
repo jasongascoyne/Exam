@@ -40,7 +40,8 @@ private Map<Integer, Integer> points;
 	public Map<Integer, Integer> getPoints() {
 		return points;
 	}
+	
 	public void setPoints(Map<Integer, Integer> points) {
 		this.points = points;
 	}
-	}
+}
