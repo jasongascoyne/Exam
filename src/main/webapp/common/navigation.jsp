@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
+
 <ul class="nav nav-pills flex-column mb-auto px-4">
 	<li class="nav-item my-3"><a href="Menu.action">メニュー</a></li>
 	<li class="nav-item mb-3"><a href="StudentList.action">学生管理</a></li>
